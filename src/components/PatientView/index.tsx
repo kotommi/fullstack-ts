@@ -14,11 +14,9 @@ const PatientView = () => {
         }
         void fetchPatient();
     }, [paramId]);
-    
-    
-    
     if (!patient) return null;
     const p = patient;
+    console.log(p.entries);
     return (
         <div>
             <h1>{p.name}</h1>
@@ -29,6 +27,19 @@ const PatientView = () => {
                 Gender: {p.gender} <br></br>
                 Id: {p.id} <br></br>
             </p>
+            <h1>Entries</h1>
+            <div>
+            {p.entries.map(e => {
+                return (
+                    <div>
+                        <p>{e.date} {e.description}</p>
+                        <ul>
+                            {e.diagnosisCodes?.map(code => <li key={code}>{code}</li>)}
+                        </ul>
+                    </div>
+                )
+            })}
+            </div>
         </div>
     );
 };
