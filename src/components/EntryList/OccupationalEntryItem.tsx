@@ -14,7 +14,7 @@ const OccupationalEntryItem = (props: Props) => {
     const e = props.entry;
     return (
         <div style={itemStyle}>
-            {e.date} <WorkIcon></WorkIcon> <br></br>
+            {e.date} <WorkIcon></WorkIcon> {e.employerName} <br></br>
             {e.description} <br></br>
             {e.sickLeave? `Sick leave: ${e.sickLeave.startDate} - ${e.sickLeave.endDate}` : null}
             <ul>
