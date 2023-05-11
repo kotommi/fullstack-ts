@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import patientService from "./../../services/patients";
 import diagnosesService from "./../../services/diagnoses"
-import EntryList from "./EntryList";
+import EntryList from "../EntryList";
 
 const PatientView = () => {
     const [patient, setPatient] = useState<Patient>();
