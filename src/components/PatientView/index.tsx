@@ -1,13 +1,25 @@
-import { Diagnosis, Patient } from "./../../types";
+import { Diagnosis, EntryFormValues, Patient } from "./../../types";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import patientService from "./../../services/patients";
 import diagnosesService from "./../../services/diagnoses"
 import EntryList from "../EntryList";
+import PatientDetails from "./PatientDetails";
+import AddEntryModal from "../AddEntryModal";
+import { Button } from "@mui/material";
 
 const PatientView = () => {
     const [patient, setPatient] = useState<Patient>();
     const [diagnoses, setDiagnoses] = useState<Diagnosis[]>([]);
+
+    const [modalOpen, setModalOpen] = useState<boolean>(false);
+    const [error, setError] = useState("");
+    const openModal = () => setModalOpen(true);
+    const closeModal = () => setModalOpen(false);
+    const submitNewEntry = (entry: EntryFormValues) => {
+        console.log(entry);
+    }
+
     const paramId = useParams().id;
     useEffect(() => {
         const fetchDiag = async () => {
@@ -15,7 +27,7 @@ const PatientView = () => {
             setDiagnoses(diags);
         }
         void fetchDiag();
-    },[])
+    }, [])
     useEffect(() => {
         const patientId = paramId ? paramId : "asd";
         const fetchPatient = async () => {
@@ -28,16 +40,16 @@ const PatientView = () => {
     const p = patient;
     return (
         <div>
-            <h1>{p.name}</h1>
-            <p>
-                ssn: {p.ssn} <br></br>
-                occupation: {p.occupation} <br></br>
-                Date of Birth: {p.dateOfBirth} <br></br>
-                Gender: {p.gender} <br></br>
-                Id: {p.id} <br></br>
-            </p>
+            <PatientDetails patient={patient} />
             <EntryList entries={p.entries} diagnoses={diagnoses}></EntryList>
-            
+            <AddEntryModal
+                modalOpen={modalOpen}
+                onSubmit={submitNewEntry}
+                error={error}
+                onClose={closeModal}></AddEntryModal>
+            <Button variant="contained" onClick={() => openModal()}>
+                Add New Entry
+            </Button>
         </div>
     );
 };

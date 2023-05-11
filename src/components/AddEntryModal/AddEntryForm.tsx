@@ -1,97 +1,72 @@
 import { useState, SyntheticEvent } from "react";
 
-import {  TextField, InputLabel, MenuItem, Select, Grid, Button, SelectChangeEvent } from '@mui/material';
+import { TextField, Grid, Button } from '@mui/material';
 
-import { PatientFormValues, Gender } from "../../types";
+import { EntryFormValues, HealthCheckRating } from "../../types";
 
 interface Props {
   onCancel: () => void;
-  onSubmit: (values: PatientFormValues) => void;
+  onSubmit: (values: EntryFormValues) => void;
 }
-
-interface GenderOption{
-  value: Gender;
-  label: string;
-}
-
-const genderOptions: GenderOption[] = Object.values(Gender).map(v => ({
-  value: v, label: v.toString()
-}));
 
 const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
-  const [name, setName] = useState('');
-  const [occupation, setOccupation] = useState('');
-  const [ssn, setSsn] = useState('');
-  const [dateOfBirth, setDateOfBirth] = useState('');
-  const [gender, setGender] = useState(Gender.Other);
 
-  const onGenderChange = (event: SelectChangeEvent<string>) => {
-    event.preventDefault();
-    if ( typeof event.target.value === "string") {
-      const value = event.target.value;
-      const gender = Object.values(Gender).find(g => g.toString() === value);
-      if (gender) {
-        setGender(gender);
-      }
-    }
-  };
+  const [description, setDescription] = useState("");
+  const [date, setDate] = useState("");
+  const [specialist, setSpecialist] = useState("");
+  const [hcr, setHcr] = useState("");
+  const [diagnosisCodes, setDiagnosisCodes] = useState<string[]>([]);
 
-  const addPatient = (event: SyntheticEvent) => {
+
+  const addEntry = (event: SyntheticEvent) => {
     event.preventDefault();
     onSubmit({
-      name,
-      occupation,
-      ssn,
-      dateOfBirth,
-      gender
-    });
-  };
+      type: "HealthCheck",
+      description,
+      date,
+      specialist,
+      healthCheckRating: 0,
+      diagnosisCodes
+    })
+  }
 
   return (
     <div>
-      <form onSubmit={addPatient}>
+      <form onSubmit={addEntry}>
         <TextField
-          label="Name"
-          fullWidth 
-          value={name}
-          onChange={({ target }) => setName(target.value)}
-        />
-        <TextField
-          label="Social security number"
+          label="Description"
           fullWidth
-          value={ssn}
-          onChange={({ target }) => setSsn(target.value)}
+          value={description}
+          onChange={({ target }) => setDescription(target.value)}
         />
         <TextField
-          label="Date of birth"
+          label="Date"
+          fullWidth
+          placeholder="YYYY-MM-DD"
+          value={date}
+          onChange={({ target }) => setDate(target.value)}
+        />
+        <TextField
+          label="Specialist"
           placeholder="YYYY-MM-DD"
           fullWidth
-          value={dateOfBirth}
-          onChange={({ target }) => setDateOfBirth(target.value)}
+          value={specialist}
+          onChange={({ target }) => setSpecialist(target.value)}
         />
-        <TextField
-          label="Occupation"
+        <TextField 
+          label="Healthcheck rating"
+          placeholder="0"
           fullWidth
-          value={occupation}
-          onChange={({ target }) => setOccupation(target.value)}
+          value={hcr}
+          onChange={({target}) =>  setHcr(target.value)}
         />
-
-        <InputLabel style={{ marginTop: 20 }}>Gender</InputLabel>
-        <Select
-          label="Gender"
+        <TextField 
+          label="Diagnosis codes"
+          placeholder=""
           fullWidth
-          value={gender}
-          onChange={onGenderChange}
-        >
-        {genderOptions.map(option =>
-          <MenuItem
-            key={option.label}
-            value={option.value}
-          >
-            {option.label
-          }</MenuItem>
-        )}
-        </Select>
+          value={diagnosisCodes}
+          onChange={({target}) => setDiagnosisCodes(target.value.split(","))}
+        />
 
         <Grid>
           <Grid item>
