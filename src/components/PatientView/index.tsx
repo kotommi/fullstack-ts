@@ -1,4 +1,4 @@
-import { Diagnosis, EntryFormValues, Patient } from "./../../types";
+import { Diagnosis, Entry, EntryFormValues, Patient } from "./../../types";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import patientService from "./../../services/patients";
@@ -7,6 +7,7 @@ import EntryList from "../EntryList";
 import PatientDetails from "./PatientDetails";
 import AddEntryModal from "../AddEntryModal";
 import { Button } from "@mui/material";
+import axios from "axios";
 
 const PatientView = () => {
     const [patient, setPatient] = useState<Patient>();
@@ -16,8 +17,27 @@ const PatientView = () => {
     const [error, setError] = useState("");
     const openModal = () => setModalOpen(true);
     const closeModal = () => setModalOpen(false);
-    const submitNewEntry = (entry: EntryFormValues) => {
+    
+    const submitNewEntry = async (entry: EntryFormValues) => {
         console.log(entry);
+        try {
+            if (!patient) throw new Error("No patient");
+            const resEntry: Entry = await patientService.addEntry(patient.id, entry);
+            patient.entries.push(resEntry);
+        } catch (e: unknown) {
+            if (axios.isAxiosError(e)) {
+              if (e?.response?.data && typeof e?.response?.data === "string") {
+                const message = e.response.data.replace('Something went wrong. Error: ', '');
+                console.error(message);
+                setError(message);
+              } else {
+                setError("Unrecognized axios error");
+              }
+            } else {
+              console.error("Unknown error", e);
+              setError("Unknown error");
+            }
+          }
     }
 
     const paramId = useParams().id;

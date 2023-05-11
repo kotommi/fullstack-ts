@@ -25,7 +25,7 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
       description,
       date,
       specialist,
-      healthCheckRating: 0,
+      healthCheckRating: 2,
       diagnosisCodes
     })
   }
