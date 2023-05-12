@@ -1,6 +1,6 @@
 import { useState, SyntheticEvent } from "react";
 
-import { TextField, Grid, Button, InputLabel, Select, MenuItem } from '@mui/material';
+import { TextField, Grid, Button, InputLabel, Select, MenuItem, Input } from '@mui/material';
 
 import { EntryFormValues, Entry, Diagnosis } from "../../types";
 import { assertNever } from "../../utils";
@@ -79,9 +79,9 @@ const AddEntryForm = ({ onCancel, onSubmit, diagnoses }: Props) => {
   return (
     <div>
       <form onSubmit={addEntry}>
-        <InputLabel id="demo">Type</InputLabel>
+        <InputLabel id="typemenu">Type</InputLabel>
         <Select
-          labelId="demo"
+          labelId="typemenu"
           value={type}
           label="Type"
           onChange={({ target }) => setType(target.value as Entry["type"])}>
@@ -95,25 +95,25 @@ const AddEntryForm = ({ onCancel, onSubmit, diagnoses }: Props) => {
           value={description}
           onChange={({ target }) => setDescription(target.value)}
         />
-        <TextField
-          label="Date"
-          fullWidth
-          placeholder="YYYY-MM-DD"
+        <InputLabel id="dateinput">Date</InputLabel>
+        <Input
+          type="date"
           value={date}
-          onChange={({ target }) => setDate(target.value)}
-        />
+          onChange={({ target }) => setDate(target.value)} />
         <TextField
           label="Specialist"
-          placeholder="YYYY-MM-DD"
+          placeholder="MD House"
           fullWidth
           value={specialist}
           onChange={({ target }) => setSpecialist(target.value)}
         />
         <InputLabel id="diagcodes">Diagnosis codes</InputLabel>
         <Select
-        multiple
-        value={diagnosisCodes}
-        onChange={({target}) => setDiagnosisCodes(typeof target.value === "string" ? target.value.split(",") : target.value)}>
+          labelId="diagcodes"
+          multiple
+          fullWidth
+          value={diagnosisCodes}
+          onChange={({ target }) => setDiagnosisCodes(typeof target.value === "string" ? target.value.split(",") : target.value)}>
           {diagnoses.map(d => {
             return <MenuItem key={d.code} value={d.code}>{d.code}</MenuItem>
           })}
@@ -130,10 +130,9 @@ const AddEntryForm = ({ onCancel, onSubmit, diagnoses }: Props) => {
 
         {type === "Hospital" ?
           <div>
-            <TextField
-              label="Dischage Date"
-              placeholder="YYYY-MM-DD"
-              fullWidth
+            <InputLabel id="disdate">Discharge Date</InputLabel>
+            <Input
+              type="date"
               value={dischargeDate}
               onChange={({ target }) => setDischargeDate(target.value)} />
             <TextField
@@ -151,16 +150,14 @@ const AddEntryForm = ({ onCancel, onSubmit, diagnoses }: Props) => {
               fullWidth
               value={employerName}
               onChange={({ target }) => setEmployerName(target.value)} />
-            <TextField
-              label="Sick Leave Start Date"
-              fullWidth
-              placeholder="asdasd"
+            <InputLabel id="sickleavestartinput">Sick Leave Start Date</InputLabel>
+            <Input
+              type="date"
               value={sickLeaveStart}
               onChange={({ target }) => setSickLeaveStart(target.value)} />
-            <TextField
-              label="Sick Leave End Date"
-              fullWidth
-              placeholder="asdasd"
+            <InputLabel id="sickleaveendlabel">Sick Leave End Date</InputLabel>
+            <Input
+              type="date"
               value={sickLeaveEnd}
               onChange={({ target }) => setSickLeaveEnd(target.value)} />
           </div>
