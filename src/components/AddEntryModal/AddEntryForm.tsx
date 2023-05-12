@@ -2,15 +2,16 @@ import { useState, SyntheticEvent } from "react";
 
 import { TextField, Grid, Button, InputLabel, Select, MenuItem } from '@mui/material';
 
-import { EntryFormValues, Entry } from "../../types";
+import { EntryFormValues, Entry, Diagnosis } from "../../types";
 import { assertNever } from "../../utils";
 
 interface Props {
   onCancel: () => void;
   onSubmit: (values: EntryFormValues) => void;
+  diagnoses: Diagnosis[];
 }
 
-const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
+const AddEntryForm = ({ onCancel, onSubmit, diagnoses }: Props) => {
 
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
@@ -108,13 +109,15 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
           value={specialist}
           onChange={({ target }) => setSpecialist(target.value)}
         />
-        <TextField
-          label="Diagnosis codes"
-          placeholder=""
-          fullWidth
-          value={diagnosisCodes}
-          onChange={({ target }) => setDiagnosisCodes(target.value.split(","))}
-        />
+        <InputLabel id="diagcodes">Diagnosis codes</InputLabel>
+        <Select
+        multiple
+        value={diagnosisCodes}
+        onChange={({target}) => setDiagnosisCodes(typeof target.value === "string" ? target.value.split(",") : target.value)}>
+          {diagnoses.map(d => {
+            return <MenuItem key={d.code} value={d.code}>{d.code}</MenuItem>
+          })}
+        </Select>
         {type === "HealthCheck" ?
           <TextField
             label="HealthCheckRating"

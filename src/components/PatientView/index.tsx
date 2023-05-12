@@ -66,6 +66,7 @@ const PatientView = () => {
                 modalOpen={modalOpen}
                 onSubmit={submitNewEntry}
                 error={error}
+                diagnoses={diagnoses}
                 onClose={closeModal}></AddEntryModal>
             <Button variant="contained" onClick={() => openModal()}>
                 Add New Entry
