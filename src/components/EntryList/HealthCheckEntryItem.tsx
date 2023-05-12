@@ -31,7 +31,7 @@ const itemStyle = {
 const HealthCheckEntryItem = (props: Props) => {
     const e = props.entry;
     return (
-        <div style={itemStyle}>
+        <div style={itemStyle} key={e.id}>
             {e.date} <MedicalInformationIcon> </MedicalInformationIcon> <br></br>
             {e.description} <br></br>
             <FavoriteIcon htmlColor={healthColor(e.healthCheckRating)}></FavoriteIcon> <br></br>

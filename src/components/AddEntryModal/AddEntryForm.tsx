@@ -3,7 +3,7 @@ import { useState, SyntheticEvent } from "react";
 import { TextField, Grid, Button, InputLabel, Select, MenuItem } from '@mui/material';
 
 import { EntryFormValues, Entry } from "../../types";
-import { assertNever } from "../../utilts";
+import { assertNever } from "../../utils";
 
 interface Props {
   onCancel: () => void;
@@ -85,7 +85,7 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
           label="Type"
           onChange={({ target }) => setType(target.value as Entry["type"])}>
           <MenuItem value="HealthCheck">HealthCheck</MenuItem>
-          <MenuItem value="Occupational Healthcare">Occupational healthcare</MenuItem>
+          <MenuItem value="OccupationalHealthcare">Occupational Healthcare</MenuItem>
           <MenuItem value="Hospital">Hospital</MenuItem>
         </Select>
         <TextField
